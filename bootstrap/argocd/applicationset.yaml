@@ -31,7 +31,7 @@ spec:
     spec:
       project: webapp
       source:
-        repoURL: https://github.com/your-username/webapp-gitops.git
+        repoURL: https://github.com/dereknfernandez/webapp-gitops.git
         targetRevision: HEAD
         path: apps/overlays/{{env}}/{{app}}
       destination:
