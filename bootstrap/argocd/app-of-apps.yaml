@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-username/webapp-gitops.git
+    repoURL: https://github.com/dereknfernandez/webapp-gitops.git
     targetRevision: HEAD
     path: bootstrap/argocd
   destination:
