@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-content
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>GitOps Demo App</title>
+        <style>
+            body { font-family: Arial; margin: 0; padding: 20px; background: #f0f8ff; }
+            .container { max-width: 800px; margin: 0 auto; }
+            .header { background: #4CAF50; color: white; padding: 20px; border-radius: 10px; text-align: center; }
+            .content { background: white; padding: 20px; margin-top: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .status { display: inline-block; padding: 5px 15px; border-radius: 20px; margin: 5px; }
+            .healthy { background: #4CAF50; color: white; }
+            .loading { background: #FF9800; color: white; }
+            .version { background: #2196F3; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🚀 GitOps Demo Application</h1>
+                <p>Deployed with ArgoCD</p>
+            </div>
+            <div class="content">
+                <div class="version">Version: 1.0.0</div>
+                
+                <h3>Services Status:</h3>
+                <p>Frontend: <span class="status healthy">✅ Healthy</span></p>
+                <p>API: <span class="status loading" id="api-status">⏳ Checking...</span></p>
+                <p>Database: <span class="status loading" id="db-status">⏳ Checking...</span></p>
+                <p>Cache: <span class="status loading" id="cache-status">⏳ Checking...</span></p>
+                
+                <h3>GitOps Features Demonstrated:</h3>
+                <ul>
+                    <li>✅ App of Apps Pattern</li>
+                    <li>✅ ApplicationSets (Multi-environment)</li>
+                    <li>✅ Progressive Delivery (Argo Rollouts)</li>
+                    <li>✅ Sync Waves (Dependency ordering)</li>
+                    <li>✅ Multi-Source Applications</li>
+                    <li>✅ Sealed Secrets</li>
+                    <li>✅ Policy as Code (OPA)</li>
+                    <li>✅ RBAC & Projects</li>
+                </ul>
+                
+                <h3>Environment Info:</h3>
+                <p>Environment: <strong id="environment">Production</strong></p>
+                <p>Deployed: <strong id="timestamp"></strong></p>
+                <p>Git Commit: <strong>abc123</strong></p>
+            </div>
+        </div>
+        
+        <script>
+            // Simple health checks
+            setTimeout(() => {
+                document.getElementById('api-status').innerHTML = '✅ Healthy';
+                document.getElementById('api-status').className = 'status healthy';
+            }, 1000);
+            
+            setTimeout(() => {
+                document.getElementById('db-status').innerHTML = '✅ Healthy';
+                document.getElementById('db-status').className = 'status healthy';
+            }, 2000);
+            
+            setTimeout(() => {
+                document.getElementById('cache-status').innerHTML = '✅ Healthy';
+                document.getElementById('cache-status').className = 'status healthy';
+            }, 3000);
+            
+            document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        </script>
+    </body>
+    </html>

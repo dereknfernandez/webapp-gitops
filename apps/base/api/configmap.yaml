@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-content
+data:
+  index.html: |
+    {
+      "service": "api",
+      "version": "1.0.0",
+      "status": "healthy",
+      "timestamp": "Tue, Jun 17, 2025  6:47:26 PM",
+      "data": {
+        "users": 150,
+        "posts": 1250
+      }
+    }
+  health: |
+    {
+      "status": "healthy",
+      "service": "api",
+      "checks": {
+        "database": "connected",
+        "cache": "connected"
+      }
+    }

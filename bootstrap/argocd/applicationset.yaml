@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: webapp-environments
+  namespace: argocd
+spec:
+  generators:
+  - matrix:
+      generators:
+      - list:
+          elements:
+          - env: dev
+            replicas: 1
+            namespace: webapp-dev
+          - env: staging  
+            replicas: 2
+            namespace: webapp-staging
+          - env: prod
+            replicas: 3
+            namespace: webapp-prod
+      - list:
+          elements:
+          - app: frontend
+          - app: api
+  template:
+    metadata:
+      name: '{{env}}-{{app}}'
+      labels:
+        environment: '{{env}}'
+        component: '{{app}}'
+    spec:
+      project: webapp
+      source:
+        repoURL: https://github.com/your-username/webapp-gitops.git
+        targetRevision: HEAD
+        path: apps/overlays/{{env}}/{{app}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        retry:
+          limit: 3
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 1m

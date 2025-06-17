@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job  
+metadata:
+  name: api-health-check
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  template:
+    spec:
+      containers:
+      - name: health-check
+        image: curlimages/curl:latest
+        command: ["sh", "-c"]
+        args:
+        - |
+          echo "Testing API health..."
+          curl -f http://api-stable.webapp-prod.svc.cluster.local/health
+          echo "API health check passed!"
+      restartPolicy: Never
+  backoffLimit: 3

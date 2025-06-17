@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: webapp
+  sources:
+  # Helm chart
+  - repoURL: https://charts.bitnami.com/bitnami
+    chart: postgresql
+    targetRevision: 12.12.10
+    helm:
+      values: |
+        auth:
+          postgresPassword: "demo123"
+          username: "webapp"
+          password: "webapp123"
+          database: "webapp"
+        primary:
+          persistence:
+            size: 1Gi
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 250m
+        metrics:
+          enabled: true
+  # Git configs
+  - repoURL: https://github.com/your-username/webapp-gitops.git
+    targetRevision: HEAD
+    path: apps/base/database/config
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: webapp-data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
