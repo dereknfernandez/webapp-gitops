@@ -7,7 +7,7 @@ spec:
   description: "Simple webapp for GitOps demonstration"
   
   sourceRepos:
-  - 'https://github.com/your-username/webapp-gitops.git'
+  - 'https://github.com/dereknfernandez/webapp-gitops.git'
   - 'https://charts.bitnami.com/bitnami'
   
   destinations:
