@@ -10,13 +10,13 @@ spec:
       - list:
           elements:
           - env: dev
-            replicas: 1
+            replicas: "1"
             namespace: webapp-dev
           - env: staging  
-            replicas: 2
+            replicas: "2"
             namespace: webapp-staging
           - env: prod
-            replicas: 3
+            replicas: "3"
             namespace: webapp-prod
       - list:
           elements:
@@ -43,9 +43,3 @@ spec:
           selfHeal: true
         syncOptions:
         - CreateNamespace=true
-        retry:
-          limit: 3
-          backoff:
-            duration: 5s
-            factor: 2
-            maxDuration: 1m
