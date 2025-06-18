@@ -13,8 +13,11 @@ spec:
   destinations:
   - namespace: 'webapp-*'
     server: https://kubernetes.default.svc
-  - namespace: 'monitoring'
+  - namespace: 'monitoring'  
     server: https://kubernetes.default.svc
+  - namespace: 'argocd'
+    server: https://kubernetes.default.svc
+  - namespace: 'webapp-data'
   
   clusterResourceWhitelist:
   - group: ''
@@ -37,8 +40,6 @@ spec:
     - p, proj:webapp:developer, applications, sync, webapp/*, allow
     groups:
     - webapp-developers
-
-  # Sync windows
   syncWindows:
   - kind: deny
     schedule: '0 22-6 * * *'
