@@ -10,20 +10,8 @@ replicas:
 - name: frontend
   count: 1
 
-configMapGenerator:
-- name: frontend-content
-  behavior: merge
-  literals:
-  - index.html=|
-      <!DOCTYPE html>
-      <html>
-      <head><title>GitOps Demo - DEV</title></head>
-      <body style="background: #fff3cd;">
-        <h1>🛠️ DEVELOPMENT Environment</h1>
-        <p>Version: 1.0.0-dev</p>
-        <p>This is the development environment!</p>
-      </body>
-      </html>
+patchesStrategicMerge:
+- config-patch.yaml
 
 commonLabels:
   environment: development
