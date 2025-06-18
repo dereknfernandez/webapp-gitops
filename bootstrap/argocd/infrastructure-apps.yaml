@@ -23,7 +23,7 @@ spec:
             size: 1Gi
   - repoURL: https://github.com/dereknfernandez/webapp-gitops.git
     targetRevision: HEAD
-    path: infrastructure/database/config
+    path: infrastructure/database
   destination:
     server: https://kubernetes.default.svc
     namespace: webapp-data
