@@ -1,16 +1,15 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: frontend
-spec:
-  template:
-    spec:
-      containers:
-      - name: frontend
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
+  name: frontend-content
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>GitOps Demo - DEV</title></head>
+    <body style="background: #e8f5e8;">
+      <h1>🛠️ PRODUCTION Environment</h1>
+      <p>Version: 1.0.0-dev</p>
+      <p>This is the development environment!</p>
+    </body>
+    </html>

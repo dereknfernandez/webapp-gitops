@@ -8,30 +8,11 @@ resources:
 
 replicas:
 - name: frontend
-  count: 3
+  count: 1
 
 patchesStrategicMerge:
 - config-patch.yaml
 
-configMapGenerator:
-- name: frontend-content
-  behavior: merge
-  literals:
-  - index.html=|
-      <!DOCTYPE html>
-      <html>
-      <head><title>GitOps Demo - PRODUCTION</title></head>
-      <body style="background: #e8f5e8;">
-        <h1>🚀 PRODUCTION Environment</h1>
-        <p>Version: 2.0.0</p>
-        <p>This is the production environment!</p>
-      </body>
-      </html>
-
-images:
-- name: nginx
-  newTag: 1.22-alpine
-
 commonLabels:
   environment: production
-  version: "2.0.0"
+  version: "1.0.0-dev"
