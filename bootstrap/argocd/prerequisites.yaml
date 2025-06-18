@@ -1,0 +1,49 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argo-rollouts
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: install-argo-rollouts
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "-10"
+data:
+  install.sh: |
+    #!/bin/bash
+    kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: install-prerequisites
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  template:
+    spec:
+      serviceAccount: argocd-application-controller
+      containers:
+      - name: installer
+        image: bitnami/kubectl:latest
+        command: ["/bin/bash"]
+        args: ["/scripts/install.sh"]
+        volumeMounts:
+        - name: install-script
+          mountPath: /scripts
+      volumes:
+      - name: install-script
+        configMap:
+          name: install-argo-rollouts
+          defaultMode: 0755
+      restartPolicy: Never
+  backoffLimit: 3

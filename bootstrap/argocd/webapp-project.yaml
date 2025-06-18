@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: webapp
+  namespace: argocd
+spec:
+  description: "Simple webapp for GitOps demonstration"
+  
+  sourceRepos:
+  - 'https://github.com/dereknfernandez/webapp-gitops.git'
+  - 'https://charts.bitnami.com/bitnami'
+  
+  destinations:
+  - namespace: 'webapp-*'
+    server: https://kubernetes.default.svc
+  - namespace: 'monitoring'
+    server: https://kubernetes.default.svc
+  
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+  
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  
+  roles:
+  - name: admin
+    policies:
+    - p, proj:webapp:admin, applications, *, webapp/*, allow
+    groups:
+    - webapp-admins
+  
+  - name: developer
+    policies:
+    - p, proj:webapp:developer, applications, get, webapp/*, allow
+    - p, proj:webapp:developer, applications, sync, webapp/*, allow
+    groups:
+    - webapp-developers
+
+  # Sync windows
+  syncWindows:
+  - kind: deny
+    schedule: '0 22-6 * * *'
+    duration: 8h
+    applications:
+    - '*-prod'
+    manualSync: false
