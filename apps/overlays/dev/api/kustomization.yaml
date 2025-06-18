@@ -5,7 +5,3 @@ namespace: webapp-dev
 
 resources:
 - ../../../base/api
-
-commonLabels:
-  environment: development
-  version: "1.0.0-dev"

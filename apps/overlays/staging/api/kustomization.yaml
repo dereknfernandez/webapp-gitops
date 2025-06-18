@@ -5,7 +5,3 @@ namespace: webapp-staging
 
 resources:
 - ../../../base/api
-
-commonLabels:
-  environment: staging
-  version: "1.0.0-staging"
