@@ -1,10 +1,37 @@
+# Infrastructure Application - Manages ingress and networking
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infrastructure
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/dereknfernandez/webapp-gitops.git
+    targetRevision: HEAD
+    path: infrastructure
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+
+# Database Application - Manages PostgreSQL
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: postgres
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "-2"
 spec:
   project: webapp
   sources:
@@ -21,6 +48,8 @@ spec:
         primary:
           persistence:
             size: 1Gi
+        metrics:
+          enabled: true
   - repoURL: https://github.com/dereknfernandez/webapp-gitops.git
     targetRevision: HEAD
     path: infrastructure/database
